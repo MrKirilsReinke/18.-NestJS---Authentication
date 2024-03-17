@@ -1,73 +1,112 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+# Comment Management App with Authentication
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This project is a Comment Management System built using NestJS, featuring a robust authentication mechanism. It is designed to facilitate the management of comments, where each comment's approval status is controlled by an administrator. The system supports user registration and authentication, allowing authenticated users to create and update their comments, while untracked users can only browse existing comments. All operations are conducted within an isolated SQLite database per installation, ensuring data privacy and integrity. The application uses custom decorators, middleware, and a serialization interceptor to enhance security and functionality, making it a good solution for applications that require a user authentication system and administrative control over content.
+
+## Table of Contents
+
+- [Description](#description)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Features](#features)
+- [Credits](#credits)
+- [How to Contribute](#how-to-contribute)
 
 ## Installation
 
-```bash
-$ npm install
-```
+To get started with this project, you need to install the required dependencies and run it. Follow these steps:
 
-## Running the app
+1. Clone the repository to your local machine.
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+git clone <repository_url>
 ```
 
-## Test
+2. Navigate to the project directory.
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+cd <project_directory>
 ```
 
-## Support
+3. Install the project dependencies using npm.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```bash
+npm install
+```
 
-## Stay in touch
+4. Run the application.
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```bash
+npm run start:dev
+```
 
-## License
+## Usage
 
-Nest is [MIT licensed](LICENSE).
+To interact with the Comment Manager, use an API client like Postman. For database management and viewing use "DB Browser for SQLite".
+
+1. Authenticate Users: Users can log in with their credentials or register if they don't have an account.
+2. Manage Comments: Authenticated users can create and update their comments. All comments are initially unapproved.
+3. Admin Actions: Admin users can approve or disapprove comments to manage content visibility.
+
+localhost:3000 routes:
+
+_UsersController Routes (/auth):_
+* GET /auth/whoami: Retrieves information about the current authenticated user.
+* POST /auth/signout: Signs out the current user by ending their session.
+* POST /auth/signup: Registers a new user with the provided email and password.
+* POST /auth/signin: Authenticates a user and starts a session with the given login credentials.
+* GET /auth/users: Lists all registered users (probably requires admin rights).
+* GET /auth/:id: Retrieves the details of a specific user by their ID.
+* PUT /auth/:id: Updates the details of a specific user by their ID.
+* DELETE /auth/:id: Deletes a specific user by their ID.
+
+_CommentsController Routes (/comments):_
+* POST /comments: Creates a new comment (requires authentication).
+* PUT /comments/approve-comments/:id: Approves a comment specified by its ID (requires admin rights).
+* PUT /comments/:id: Updates a specific comment by its ID (requires that the comment belongs to the authenticated user).
+* GET /comments: Retrieves all comments, with or without authentication.
+* GET /comments/:id: Retrieves a specific comment by its ID.
+* DELETE /comments/:id: Deletes a specific comment by its ID (requires admin rights or that the comment belongs to the authenticated user).
+
+## Features
+
+* User Authentication: Secure registration and login process with password hashing and salting.
+* Comment Management: Create, update, and view comments with user association.
+* Admin Moderation: Administrative capabilities to approve or disapprove comments.
+* Security: Utilize middleware and custom decorators to handle authentication and authorization seamlessly.
+* Data Integrity: Use of serialize interceptor to ensure sensitive data like passwords are not included in responses.
+
+## Credits
+
+This project uses the following technologies:
+
+* NestJS: A progressive Node.js framework for building efficient and scalable server-side applications.
+* TypeORM: An ORM that can run in Node.js and be used with TypeScript or JavaScript.
+* Class Validator & Class Transformer: Libraries to validate incoming data and transform objects.
+
+## How to Contribute
+
+Contributions to this project are welcome. To contribute, follow these steps:
+
+1. Fork the repository to your GitHub account.
+2. Create a new branch for your feature or bug fix.
+
+```bash
+git checkout -b feature/your-feature-name
+```
+
+3. Make your changes and commit them.
+
+```bash
+git add .
+git commit -m "Added a new feature"
+```
+
+4. Push your changes to your forked repository.
+
+```bash 
+git push origin feature/your-feature-name
+```
+
+5. Create a Pull Request (PR) to the main repository, explaining your changes and improvements.

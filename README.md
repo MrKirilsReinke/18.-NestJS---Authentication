@@ -2,7 +2,7 @@
 
 ## Description
 
-This project is a Comment Management System built using NestJS, featuring a robust authentication mechanism. It is designed to facilitate the management of comments, where each comment's approval status is controlled by an administrator. The system supports user registration and authentication, allowing authenticated users to create and update their comments, while untracked users can only browse existing comments. All operations are conducted within an isolated SQLite database per installation, ensuring data privacy and integrity. The application uses custom decorators, middleware, and a serialization interceptor to enhance security and functionality, making it a good solution for applications that require a user authentication system and administrative control over content.
+Comment Management App built using NestJS, featuring a robust authentication mechanism that includes administrative controls for comment approval. It supports user registration and authentication, with detailed comment management capabilities for authenticated users, while allowing untracked users to browse existing comments. The system uses an isolated SQLite database to ensure data privacy and integrity and employs custom decorators, middleware, and serialization interceptors to enhance security and functionality, ideal for applications needing both user authentication and administrative content control.
 
 ## Table of Contents
 
@@ -45,9 +45,16 @@ npm run start:dev
 
 To interact with the Comment Manager, use an API client like Postman. For database management and viewing use "DB Browser for SQLite".
 
-1. Authenticate Users: Users can log in with their credentials or register if they don't have an account.
-2. Manage Comments: Authenticated users can create and update their comments. All comments are initially unapproved.
-3. Admin Actions: Admin users can approve or disapprove comments to manage content visibility.
+##### Initial setup:
+
+An initial admin user should be created during the system setup to enable full administrative functionality from the start. This process typically involves directly setting a user’s admin field to true in the database or through an initial setup script.
+
+1. Authenticate Users: 
+* Users can log in with their credentials or register if they don't have an account.
+2. Manage Comments: 
+* Authenticated users can create and update their comments. All comments are initially unapproved.
+3. Admin Actions: 
+* Admin users can approve or disapprove comments to manage content visibility.
 
 localhost:3000 routes:
 

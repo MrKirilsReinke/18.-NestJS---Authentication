@@ -39,7 +39,7 @@ export class CommentsController {
     @Param('id') id: number,
     @Body() approveCommentDto: ApproveCommentDto,
   ) {
-    return this.commentsService.changeApproval(id, approveCommentDto.approved);
+    return this.commentsService.changeApproval(id, approveCommentDto);
   }
 
   @Put(':id')
@@ -49,7 +49,7 @@ export class CommentsController {
     @Body() updateCommentDto: UpdateCommentDto,
     @CurrentUser() user: User,
   ) {
-    return this.commentsService.update(id, updateCommentDto /* , user */);
+    return this.commentsService.update(id, updateCommentDto, user);
   }
 
   @Get()

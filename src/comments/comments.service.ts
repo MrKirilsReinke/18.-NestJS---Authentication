@@ -4,27 +4,27 @@ import { UpdateCommentDto } from './dto/update-comment.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Comment } from './entities/comment.entity';
-import { UsersService } from 'src/users/users.service';
 import { User } from 'src/users/entities/user.entity';
-import { AuthService } from 'src/users/auth.service';
+import { ApproveCommentDto } from './dto/approve-comment.dto';
 
 @Injectable()
 export class CommentsService {
   constructor(
     @InjectRepository(Comment)
     private readonly commentsRepository: Repository<Comment>,
-    private readonly userService: UsersService,
-    private readonly authService: AuthService,
   ) {}
 
-  async create(createCommentDto: CreateCommentDto, user: User) {
+  async create(
+    createCommentDto: CreateCommentDto,
+    user: User,
+  ): Promise<Comment> {
     const comment = this.commentsRepository.create(createCommentDto);
     comment.user = user;
 
     return await this.commentsRepository.save(comment);
   }
 
-  async findAll() {
+  async findAll(): Promise<Comment[]> {
     return await this.commentsRepository.find({
       relations: {
         user: true,
@@ -32,28 +32,36 @@ export class CommentsService {
     });
   }
 
-  async findOne(id: number) {
-    return await this.commentsRepository.findOne({
+  async findOne(id: number): Promise<Comment | null> {
+    const comment = await this.commentsRepository.findOne({
       where: { id },
       relations: ['user'],
     });
+
+    if (!comment) {
+      throw new NotFoundException('Subject is not found');
+    }
+
+    return comment;
   }
 
-  async changeApproval(id: number, approved: boolean) {
+  async changeApproval(
+    id: number,
+    approveCommentDto: ApproveCommentDto,
+  ): Promise<Comment> {
     const comment = await this.commentsRepository.findOne({ where: { id } });
 
     if (!comment) {
       throw new NotFoundException('Subject is not found');
     }
 
-    comment.approved = approved;
+    comment.approved = approveCommentDto.approved;
     return this.commentsRepository.save(comment);
   }
 
-  async update(
-    id: number,
-    updateCommentDto: UpdateCommentDto /* , user: User */,
-  ) {
+  async update(id: number, updateCommentDto: UpdateCommentDto, user: User) {
+    const userId = user.id;
+
     const comment = await this.commentsRepository.findOne({ where: { id } });
 
     if (!comment) {
@@ -62,16 +70,13 @@ export class CommentsService {
 
     const commentUserId = comment.user.id;
 
-    const userId = await this.authService.getCurrentUserId();
-    // console.log(userId, 'userId');
-    // console.log(commentUserId, 'commentUserId');
-
     if (commentUserId !== userId) {
       throw new NotFoundException('You can update only your comments');
     }
 
     comment.text = updateCommentDto.text;
-    Object.assign(updateCommentDto);
+    comment.approved = false;
+    Object.assign(comment, updateCommentDto);
 
     return this.commentsRepository.save(comment);
   }

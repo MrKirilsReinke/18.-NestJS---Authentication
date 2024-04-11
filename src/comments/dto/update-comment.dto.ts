@@ -5,5 +5,5 @@ import { IsOptional, IsString } from 'class-validator';
 export class UpdateCommentDto extends PartialType(CreateCommentDto) {
   @IsString()
   @IsOptional()
-  text: string;
+  subcomment: string;
 }

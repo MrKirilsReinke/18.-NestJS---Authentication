@@ -74,7 +74,7 @@ export class CommentsService {
       throw new NotFoundException('You can update only your comments');
     }
 
-    comment.text = updateCommentDto.text;
+    comment.subcomment = updateCommentDto.subcomment;
     comment.approved = false;
     Object.assign(comment, updateCommentDto);
 

@@ -21,7 +21,7 @@ export class Comment {
   comment: string;
 
   @Column()
-  text: string;
+  subcomment: string;
 
   @CreateDateColumn()
   createdAt: Date;

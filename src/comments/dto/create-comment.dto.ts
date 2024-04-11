@@ -7,5 +7,5 @@ export class CreateCommentDto {
 
   @IsNotEmpty()
   @IsString()
-  text: string;
+  subcomment: string;
 }

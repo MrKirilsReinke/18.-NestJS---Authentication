@@ -1,25 +1,25 @@
 import { Expose, Transform } from 'class-transformer';
 
 export class CommentDto {
-  @Expose()
+  @Expose({ name: 'id' })
   id: number;
 
-  @Expose()
+  @Expose({ name: 'comment' })
   comment: string;
 
-  @Expose()
-  text: string;
+  @Expose({ name: 'subcomment' })
+  subcomment: string;
 
-  @Expose()
+  @Expose({ name: 'created_at' })
   createdAt: Date;
 
-  @Expose()
+  @Expose({ name: 'updated_at' })
   updatedAt: Date;
 
   @Transform(({ obj }) => obj.user.id)
-  @Expose()
+  @Expose({ name: 'user_id' })
   userId: number;
 
-  @Expose()
+  @Expose({ name: 'approved' })
   approved: boolean;
 }

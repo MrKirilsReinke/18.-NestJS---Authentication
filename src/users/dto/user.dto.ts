@@ -2,13 +2,13 @@ import { Expose, Type } from 'class-transformer';
 import { CommentDto } from 'src/comments/dto/comment.dto';
 
 export class UserDto {
-  @Expose()
+  @Expose({ name: 'id' })
   id: number;
 
-  @Expose()
+  @Expose({ name: 'email' })
   email: string;
 
   @Type(() => CommentDto)
-  @Expose()
+  @Expose({ name: 'comments' })
   comments: CommentDto[];
 }

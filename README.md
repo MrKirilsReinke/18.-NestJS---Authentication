@@ -47,7 +47,7 @@ To interact with the Comment Manager, use an API client like Postman. For databa
 
 ##### Initial setup:
 
-An initial admin user should be created during the system setup to enable full administrative functionality from the start. This process typically involves directly setting a user’s admin field to true in the database or through an initial setup script.
+An initial admin user should be created during the system setup to enable full administrative functionality from the start. This process typically involves directly setting a user’s 'admin' field to true in the src/users/entities/user.entity.ts file.
 
 1. Authenticate Users: 
 * Users can log in with their credentials or register if they don't have an account.
